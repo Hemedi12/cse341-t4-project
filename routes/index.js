@@ -1,12 +1,35 @@
 const router = require('express').Router();
-
+const passport = require('passport');
 
 router.get('/api', (req, res) => {
     res.status(200).json({ message: 'Welcome to the Movie API' });
 });
 
 // Authentication Routes
-router.use('/api/auth', require('./authRoutes'));
+// router.use('/api/auth', require('./authRoutes'));
+
+// Define routes for authentication
+// router.get('/login', passport.authenticate('github'));
+
+// router.get('/logout', (req, res, next) => {
+//     req.logout(err => {
+//         if (err) {
+//             return next(err);
+//         };
+//         res.redirect('/');
+//     });
+// });
+
+router.get('/logout', (req, res, next) => {
+    req.logout(err => {
+        if (err) return next(err);
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            res.redirect('/');
+        });
+    });
+});
+
 
 // User Routes
 router.use('/api/users', require('./userRoutes'));
@@ -18,7 +41,7 @@ router.use('/api/movies', require('./movieRoutes'));
 router.use('/api/favorites', require('./favoriteRoutes'));
 
 // Review Routes
-// router.use('/api/reviews', require('./reviewRoutes'));
+router.use('/api/movies', require('./reviewRoutes'));
 
 // Watchlist Routes
 // router.use('/api/watchlist', require('./watchlistRoutes'));
