@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
@@ -10,7 +12,7 @@ const session = require('express-session');
 const User = require('./models/userModel');
 const MongoStore = require('connect-mongo');
 
-dotenv.config();
+
 
 console.log('Using GITHUB_CALLBACK_URL:', process.env.GITHUB_CALLBACK_URL);
 
